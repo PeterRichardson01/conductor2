@@ -40,12 +40,22 @@ OpenCode adaptation is secondary to upstream Conductor behavior.
 - `implement` reads `conductor/index.md`, the selected track's `spec.md`, `plan.md`, and the linked workflow before coding.
 - `implement` must not create a brand-new track opportunistically when the user asked to execute an approved plan.
 - `implement` updates track and plan state as work progresses, then hands the track to `review` when implementation is complete.
+- Each `/conductor/implement` invocation works on the current phase only. After checkpointing that phase, it stops and reports the exact command for resuming the next phase. A fresh session is recommended for each phase so implementation context does not grow without bound.
 
 ## Review Contract
 
 - `review` verifies the completed track against its `spec.md`, `plan.md`, and linked workflow.
 - `review` owns completion and closure of the selected track in `conductor/tracks.md`.
 - `review` should keep project-level truth honest by rejecting overstated completion claims.
+- Review and review-fix work should be resumed in a fresh session after each approval gate or correction round when practical; the command must preserve progress in the track artifacts rather than relying on conversation history.
+
+## Recovery and resource boundaries
+
+- A failed edit or patch is not permission to retry the same operation blindly. After the first edit failure, reread the target file or exact target region and regenerate the edit from current on-disk content. Allow a second regenerated attempt automatically. After three consecutive failures against the same file or area, pause that subtask, record the concrete error, and continue only with independent work; do not repeatedly retry the stale operation.
+- A failed command or test should be classified before retrying: correct the command or inputs once when the cause is clear, then rerun. Do not rerun an unchanged failing command more than once without new evidence.
+- If the user says not to use a device, emulator, or external runtime, treat that as a session-wide prohibition. Do not invoke installation, launch, screenshot, UI-hierarchy, or device-shell commands for the remainder of that session.
+- Device or emulator verification is opt-in. Ask before installing, launching, or interacting with a device when the user has not explicitly requested that verification.
+- Build tools with shared output directories, including Gradle, run serially unless the project explicitly documents safe parallelism.
 
 ## Unbias Contract
 

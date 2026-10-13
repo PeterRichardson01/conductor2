@@ -20,6 +20,14 @@ Do not create a new track during `/conductor/implement` unless the user explicit
 
 `plan.md` is organized into phases, each with its own tasks. Follow this protocol exactly.
 
+## Session boundary
+
+This invocation implements **one current phase only**. Do not start a later phase after checkpointing the current phase. At the end of a successful phase checkpoint, stop and report:
+
+`Phase <N> is checkpointed. Resume with /conductor/implement $ARGUMENTS in a fresh session for the next phase.`
+
+This boundary limits context growth and makes each phase resumable from `plan.md`, git history, and the worktree. If the current phase is already checkpointed, start at the first incomplete phase; if every phase is checkpointed, perform only the track-complete handoff in Step 4.
+
 ## 0. Resolve the track's worktree
 
 Read `conductor/tracks/$ARGUMENTS/metadata.json`. If it contains a `worktreePath` field, this track has a dedicated worktree: confirm the current working directory is that worktree (`worktreePath`) before touching any file below — if it is not, treat every subsequent read/write/commit in this command as scoped to that worktree path, not the invoking directory. This keeps `plan.md`, `tracks.md`, and all commits isolated to the track's own branch, so parallel `/conductor/implement` runs in sibling worktrees never contend for the same files.
@@ -34,6 +42,14 @@ checkpoint or `/conductor/review`. Adapt the current task right away, then
 verify the fix using the same test-first/test-after loop from
 `conductor/workflow.md` that the task's type requires before marking it done.
 Do not wait for phase-end or track-end to act on it.
+
+## 1.5. Tool and runtime boundaries
+
+- Device or emulator work is opt-in. Before installing an APK, launching an app, taking screenshots, dumping UI hierarchy, or issuing device-shell commands, obtain explicit user confirmation unless the user already requested that exact verification in the current session.
+- If the user says not to use a device, emulator, or external runtime, stop all such work immediately and do not issue any device-related command later in this session. Continue with host-side tests and builds where possible, and record device verification as deferred rather than attempting workarounds.
+- Run Gradle and other build commands with shared output directories serially unless the project explicitly documents safe parallel execution.
+- When an edit or patch fails, do not repeat the same edit. Reread the target file or exact target region, regenerate the edit from current content, and retry automatically. A second regenerated attempt is allowed. After three consecutive failures against the same file or area, leave the task `[~]`, record the concrete error as a blocker, and stop that subtask; continue only with independent tasks.
+- When a test or shell command fails, inspect the failure and correct the command or inputs once when the cause is clear. Do not rerun an unchanged failing command more than once without new evidence.
 
 ## 2. Work through the current phase
 When marking this track's very first task `[~]` (i.e. this is the
@@ -95,9 +111,9 @@ Do not silently continue to the next phase. Instead:
       - If the user gives feedback: fix it in place (using the task
         commit procedure for whatever changed), re-run only the checks
         that fix could affect, and re-present the phase summary. Loop
-        until they say yes. No round cap, same as `/conductor/review`'s
-        correction loop — but note if this is the 3rd+ round on the
-        same file or area, same as `/conductor/review` does.
+         until they say yes. After three rounds touching the same file or
+         area, pause and ask whether to continue in a fresh session rather
+         than repeating the same correction indefinitely.
       - Do not proceed to step f until the user has given an explicit
         yes.
    e. **If untagged:** present the same short phase summary as above,
@@ -111,8 +127,9 @@ Do not silently continue to the next phase. Instead:
       `## Phase <N>: <title> [checkpoint: <sha>]` (appended after any
       existing `[manual-checkpoint]` tag). Do not create a new empty
       commit.
-   g. Move to the next phase and repeat from step 2. If this was the
-      last phase, go to step 4.
+   g. Stop after recording the checkpoint. Do not move to the next phase
+      in this invocation. If this was the last phase, go to step 4;
+      otherwise report the fresh-session resume command.
 
 ## 4. Track complete
 Once every phase has its own checkpoint commit:

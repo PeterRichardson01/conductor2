@@ -4,6 +4,14 @@ This file defines *how* work gets done on this project: methodology,
 test enforcement, and commit conventions. `/conductor/implement` and `/conductor/review`
 both read this file before acting — it is binding, not a suggestion.
 
+## Execution boundaries and recovery
+
+- Each `/conductor/implement` invocation works on one current phase only. After checkpointing that phase, it stops; the next phase resumes from the recorded plan and git state in a fresh invocation/session.
+- After an edit or patch failure, reread the target file or exact region and regenerate the edit from current on-disk content. Allow one additional regenerated attempt automatically. After three consecutive failures against the same file or area, record the concrete blocker and stop that subtask; do not retry the same stale edit indefinitely.
+- After a failed test or shell command, classify the failure and correct the command or inputs once when the cause is clear. Do not rerun an unchanged failing command more than once without new evidence.
+- Device or emulator verification is opt-in. If the user says not to use a device, emulator, or external runtime, no installation, launch, screenshot, UI-hierarchy, or device-shell command may be issued for the remainder of that session.
+- Run Gradle and other build commands with shared output directories serially unless the project explicitly documents safe parallel execution.
+
 ## Test enforcement by task type
 
 Every task in a track's `plan.md` must be tagged with one of the
