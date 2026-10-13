@@ -2,18 +2,18 @@
 # Fetch the latest Conductor from GitHub and install it.
 #
 # Usage (always latest):
-#   curl -fsSL https://raw.githubusercontent.com/dstran/conductor2/main/install-latest.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/PeterRichardson01/conductor2/main/install-latest.sh | bash
 # or, from a local copy:
 #   bash install-latest.sh
 #
 # Overridable via environment variables:
-#   CONDUCTOR_REPO  git URL to clone   (default: https://github.com/dstran/conductor2.git)
+#   CONDUCTOR_REPO  git URL to clone   (default: https://github.com/PeterRichardson01/conductor2.git)
 #   CONDUCTOR_REF   branch/tag/ref     (default: main)
 #   XDG_CACHE_HOME  cache base dir     (default: $HOME/.cache)
 
 set -e
 
-REPO="${CONDUCTOR_REPO:-https://github.com/dstran/conductor2.git}"
+REPO="${CONDUCTOR_REPO:-https://github.com/PeterRichardson01/conductor2.git}"
 REF="${CONDUCTOR_REF:-main}"
 CACHE_BASE="${XDG_CACHE_HOME:-$HOME/.cache}"
 CLONE_DIR="$CACHE_BASE/conductor2"

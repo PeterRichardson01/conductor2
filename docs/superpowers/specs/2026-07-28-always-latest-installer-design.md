@@ -39,14 +39,14 @@ Both paths use the same code:
 3. **Clone location:** `${XDG_CACHE_HOME:-$HOME/.cache}/conductor2`. Disposable
    cache, not a workspace.
 4. **Ref:** tracks `main` by default, overridable via `CONDUCTOR_REF`.
-5. **Clone URL:** HTTPS `https://github.com/dstran/conductor2.git` by default
+5. **Clone URL:** HTTPS `https://github.com/PeterRichardson01/conductor2.git` by default
    (no SSH-key dependency for the newcomer path), overridable via
    `CONDUCTOR_REPO`.
 
 ## `install-latest.sh` behavior
 
 1. Resolve configuration with env-var overrides and defaults:
-   - `CONDUCTOR_REPO` → `https://github.com/dstran/conductor2.git`
+   - `CONDUCTOR_REPO` → `https://github.com/PeterRichardson01/conductor2.git`
    - `CONDUCTOR_REF` → `main`
    - clone dir → `${XDG_CACHE_HOME:-$HOME/.cache}/conductor2`
 2. Verify `git` is available; if not, print a clear error and exit non-zero.
@@ -79,7 +79,7 @@ The script uses `set -e` (like `install.sh`) and quotes all paths.
 Add an "Install / update (always latest)" section documenting:
 
 - The Path A one-liner:
-  `curl -fsSL https://raw.githubusercontent.com/dstran/conductor2/main/install-latest.sh | bash`
+  `curl -fsSL https://raw.githubusercontent.com/PeterRichardson01/conductor2/main/install-latest.sh | bash`
 - The Path B local invocation (run the script; optional shell-alias hint).
 - The env-var overrides: `CONDUCTOR_REF` (default `main`) and `CONDUCTOR_REPO`
   (default the HTTPS URL).

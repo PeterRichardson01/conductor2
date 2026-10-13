@@ -15,7 +15,7 @@ per-project state under a `conductor/` directory.
 Install or update to the latest version from GitHub with one command:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dstran/conductor2/main/install-latest.sh | bash
+curl -fsSL https://raw.githubusercontent.com/PeterRichardson01/conductor2/main/install-latest.sh | bash
 ```
 
 Run the same command again any time to update. It keeps a cache clone at
@@ -25,12 +25,12 @@ runs the installer. Then restart your AI shell.
 Overrides (environment variables):
 
 - `CONDUCTOR_REF` — branch or tag to install (default `main`).
-- `CONDUCTOR_REPO` — git URL to clone (default `https://github.com/dstran/conductor2.git`).
+- `CONDUCTOR_REPO` — git URL to clone (default `https://github.com/PeterRichardson01/conductor2.git`).
 
 Prefer to inspect before running remote code? Download, read, then run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dstran/conductor2/main/install-latest.sh -o install-latest.sh
+curl -fsSL https://raw.githubusercontent.com/PeterRichardson01/conductor2/main/install-latest.sh -o install-latest.sh
 less install-latest.sh
 bash install-latest.sh
 ```

@@ -11,7 +11,7 @@
 ## Global Constraints
 
 - Do NOT modify `install.sh`. It stays the copy-from-tree core with its repo-root guard.
-- Defaults, each overridable via env var: `CONDUCTOR_REPO=https://github.com/dstran/conductor2.git`, `CONDUCTOR_REF=main`, clone dir `${XDG_CACHE_HOME:-$HOME/.cache}/conductor2`.
+- Defaults, each overridable via env var: `CONDUCTOR_REPO=https://github.com/PeterRichardson01/conductor2.git`, `CONDUCTOR_REF=main`, clone dir `${XDG_CACHE_HOME:-$HOME/.cache}/conductor2`.
 - Clone URL is HTTPS by default (no SSH-key dependency).
 - The cache clone is disposable: sync via `git fetch` + `git reset --hard origin/<ref>` so a dirty/diverged cache self-heals; never try to preserve local edits in the cache.
 - `install-latest.sh` must run `install.sh` from a cwd that is NOT the clone root (satisfy install.sh's repo-root guard). Use `$HOME`.
@@ -36,18 +36,18 @@
 # Fetch the latest Conductor from GitHub and install it.
 #
 # Usage (always latest):
-#   curl -fsSL https://raw.githubusercontent.com/dstran/conductor2/main/install-latest.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/PeterRichardson01/conductor2/main/install-latest.sh | bash
 # or, from a local copy:
 #   bash install-latest.sh
 #
 # Overridable via environment variables:
-#   CONDUCTOR_REPO  git URL to clone   (default: https://github.com/dstran/conductor2.git)
+#   CONDUCTOR_REPO  git URL to clone   (default: https://github.com/PeterRichardson01/conductor2.git)
 #   CONDUCTOR_REF   branch/tag/ref     (default: main)
 #   XDG_CACHE_HOME  cache base dir     (default: $HOME/.cache)
 
 set -e
 
-REPO="${CONDUCTOR_REPO:-https://github.com/dstran/conductor2.git}"
+REPO="${CONDUCTOR_REPO:-https://github.com/PeterRichardson01/conductor2.git}"
 REF="${CONDUCTOR_REF:-main}"
 CACHE_BASE="${XDG_CACHE_HOME:-$HOME/.cache}"
 CLONE_DIR="$CACHE_BASE/conductor2"
@@ -190,7 +190,7 @@ insert the following block (followed by a blank line, so the existing
 Install or update to the latest version from GitHub with one command:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dstran/conductor2/main/install-latest.sh | bash
+curl -fsSL https://raw.githubusercontent.com/PeterRichardson01/conductor2/main/install-latest.sh | bash
 ```
 
 Run the same command again any time to update. It keeps a cache clone at
@@ -200,12 +200,12 @@ runs the installer. Then restart your AI shell.
 Overrides (environment variables):
 
 - `CONDUCTOR_REF` — branch or tag to install (default `main`).
-- `CONDUCTOR_REPO` — git URL to clone (default `https://github.com/dstran/conductor2.git`).
+- `CONDUCTOR_REPO` — git URL to clone (default `https://github.com/PeterRichardson01/conductor2.git`).
 
 Prefer to inspect before running remote code? Download, read, then run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dstran/conductor2/main/install-latest.sh -o install-latest.sh
+curl -fsSL https://raw.githubusercontent.com/PeterRichardson01/conductor2/main/install-latest.sh -o install-latest.sh
 less install-latest.sh
 bash install-latest.sh
 ```
